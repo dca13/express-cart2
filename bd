@@ -1,0 +1,459 @@
+Detect Shell Script 
+Detect Shell Script 2.5.0
+Will look for : https://sig-repo.synopsys.com/bds-integrations-release/com/synopsys/integration/synopsys-detect/6.9.1/synopsys-detect-6.9.1.jar
+You have already downloaded the latest file, so the local file will be used.
+Java Source: JAVA_HOME/bin/java=/Library/Java/JavaVirtualMachines/jdk1.8.0_261.jdk/Contents/Home/bin/java
+running Detect: "/Library/Java/JavaVirtualMachines/jdk1.8.0_261.jdk/Contents/Home/bin/java"  -jar "/Users/jcroall/synopsys-detect/download/synopsys-detect-6.9.1.jar"  --blackduck.api.token=<redacted> --blackduck.url=https://testing.blackduck.synopsys.com --detect.tools=DETECTOR --detect.blackduck.scan.mode=RAPID --detect.bdio2.enabled=true --detect.bom.aggregate.name=aggregated.bdio --detect.policy.check.fail.on.severities=HIGH -hv
+______     _            _
+|  _  \   | |          | |
+| | | |___| |_ ___  ___| |_
+| | | / _ \ __/ _ \/ __| __|
+| |/ /  __/ ||  __/ (__| |_
+|___/ \___|\__\___|\___|\__|
+
+Property Name                                                        Default                       Description                                                                  
+_______________________________________________________________________________________________________________________________________________________________________________
+[bazel]
+--detect.bazel.cquery.options                                                                      A comma-separated list of additional options to pass to the bazel cquery     
+                                                                                                   command.                                                                     
+--detect.bazel.dependency.type                                                                     The Bazel workspace rule(s) used to pull in external dependencies. If not    
+                                                                                                   set, Detect will attempt to determine the rule(s) from the contents of the   
+                                                                                                   WORKSPACE file. (ALL|NONE|MAVEN_JAR|MAVEN_INSTALL|HASKELL_CABAL_LIBRARY)     
+--detect.bazel.path                                                                                The path to the Bazel executable.                                            
+--detect.bazel.target                                                                              The Bazel target (for example, //foo:foolib) for which dependencies are      
+                                                                                                   collected. For Detect to run Bazel, this property must be set.               
+
+[binary scanner]
+--detect.binary.scan.file.name.patterns                                                            If specified, all files in the source directory whose names match these file 
+                                                                                                   name patterns will be zipped and uploaded for binary scan analysis. This     
+                                                                                                   property will not be used if detect.binary.scan.file.path is specified. The  
+                                                                                                   depth of the search is 0 (subdirectories are not searched). This property    
+                                                                                                   accepts filename globbing-style wildcards. Refer to the <i>Advanced</i> >    
+                                                                                                   <i>Property wildcard support</i> page for more details.                      
+--detect.binary.scan.file.path                                                                     If specified, this file and this file only will be uploaded for binary scan  
+                                                                                                   analysis. This property takes precedence over                                
+                                                                                                   detect.binary.scan.file.name.patterns. The BINARY_SCAN tool does not provide 
+                                                                                                   project and version name defaults to Detect, so you need to set project and  
+                                                                                                   version names via properties when only the BINARY_SCAN tool is invoked.      
+--detect.binary.scan.search.depth                                    0                             The depth at which Detect will search for files to scan with the Binary      
+                                                                                                   Scanner.                                                                     
+
+[bitbake]
+--detect.bitbake.build.env.name                                      oe-init-build-env             The name of the build environment init script.                               
+--detect.bitbake.package.names                                                                     A comma-separated list of package names from which dependencies are          
+                                                                                                   extracted.                                                                   
+--detect.bitbake.search.depth                                        1                             The depth at which Detect will search for files generated by Bitbake.        
+--detect.bitbake.source.arguments                                                                  A comma-separated list of arguments to supply when sourcing the build        
+                                                                                                   environment init script.                                                     
+
+[blackduck server]
+--blackduck.api.token                                                                              The API token used to authenticate with the Black Duck Server.               
+--blackduck.offline.mode                                             false                         This can disable any Black Duck communication - if true, Detect will not     
+                                                                                                   upload BDIO files, it will not check policies, and it will not download and  
+                                                                                                   install the signature scanner.                                               
+--blackduck.trust.cert                                               false                         If true, automatically trust the certificate for the current run of Detect   
+                                                                                                   only.                                                                        
+--blackduck.url                                                                                    URL of the Black Duck server.                                                
+--detect.blackduck.scan.mode                                         INTELLIGENT                   Set the Black Duck scanning mode of Detect (RAPID|INTELLIGENT)               
+--detect.test.connection                                             false                         Test the connection to Black Duck with the current configuration.            
+--detect.timeout                                                     300                           The amount of time in seconds Detect will wait for network connection, for   
+                                                                                                   scans to finish, and to generate reports (i.e. risk and policy check). When  
+                                                                                                   changing this value, keep in mind the checking of policies might have to     
+                                                                                                   wait for scans to process which can take some time.                          
+
+[cleanup]
+--detect.cleanup                                                     true                          If true, the files created by Detect will be cleaned up.                     
+
+[conan]
+--detect.conan.arguments                                                                           A space-separated list of additional arguments to add to the 'conan info'    
+                                                                                                   command line when running Detect against a Conan project. Detect will        
+                                                                                                   execute the command 'conan info {additional arguments} .'                    
+--detect.conan.attempt.package.revision.match                        false                         If package revisions are available (a Conan lock file is found or provided,  
+                                                                                                   and Conan's revisions feature is enabled), require that each dependency's    
+                                                                                                   package revision match the package revision of the component in the KB.      
+--detect.conan.include.build.dependencies                            true                          Set this value to false if you would like to exclude your project's build    
+                                                                                                   dependencies.                                                                
+--detect.conan.lockfile.path                                                                       The path to the conan lockfile to apply when running 'conan info' to get the 
+                                                                                                   dependency graph. If set, Detect will execute the command 'conan info        
+                                                                                                   --lockfile {lockfile} .'                                                     
+--detect.conan.path                                                                                The path to the conan executable.                                            
+
+[conda]
+--detect.conda.environment.name                                                                    The name of the anaconda environment used by your project.                   
+--detect.conda.path                                                                                The path to the conda executable.                                            
+
+[cpan]
+--detect.cpan.path                                                                                 The path to the cpan executable.                                             
+--detect.cpanm.path                                                                                The path to the cpanm executable.                                            
+
+[debug]
+--detect.diagnostic                                                  false                         When enabled, diagnostic mode collects all files generated by Synopsys       
+                                                                                                   Detect and zips the files using a unique run ID. It includes logs, BDIO      
+                                                                                                   files, extraction files, and reports.                                        
+--detect.diagnostic.extended                                         false                         When enabled, Synopsys Detect performs the actions of --detect.diagnostic,   
+                                                                                                   but also includes relevant files such as lock files and build artifacts.     
+
+[default]
+--detect.phone.home.passthrough                                                                    Additional values may be sent home for usage information. The keys will be   
+                                                                                                   sent without the prefix.                                                     
+
+[detector]
+--detect.excluded.detector.types                                                                   By default, all detectors will be included. If you want to exclude specific  
+                                                                                                   detectors, specify the ones to exclude here. If you want to exclude all      
+                                                                                                   detectors, specify "ALL". Exclusion rules always win.                        
+                                                                                                   (ALL|NONE|BITBAKE|CARGO|COCOAPODS|CONAN|CONDA|CPAN|CRAN|GIT|GO_MOD|GO_DEP|GO 
+                                                                                                   _VNDR|GO_VENDOR|GO_GRADLE|GRADLE|HEX|LERNA|MAVEN|NPM|NUGET|PACKAGIST|PEAR|PI 
+                                                                                                   P|RUBYGEMS|SBT|SWIFT|YARN|CLANG)                                             
+--detect.included.detector.types                                                                   By default, all tools will be included. If you want to include only specific 
+                                                                                                   tools, specify the ones to include here. Exclusion rules always win.         
+                                                                                                   (ALL|NONE|BITBAKE|CARGO|COCOAPODS|CONAN|CONDA|CPAN|CRAN|GIT|GO_MOD|GO_DEP|GO 
+                                                                                                   _VNDR|GO_VENDOR|GO_GRADLE|GRADLE|HEX|LERNA|MAVEN|NPM|NUGET|PACKAGIST|PEAR|PI 
+                                                                                                   P|RUBYGEMS|SBT|SWIFT|YARN|CLANG)                                             
+--detect.required.detector.types                                                                   The set of required detectors.                                               
+                                                                                                   (BITBAKE|CARGO|COCOAPODS|CONAN|CONDA|CPAN|CRAN|GIT|GO_MOD|GO_DEP|GO_VNDR|GO_ 
+                                                                                                   VENDOR|GO_GRADLE|GRADLE|HEX|LERNA|MAVEN|NPM|NUGET|PACKAGIST|PEAR|PIP|RUBYGEM 
+                                                                                                   S|SBT|SWIFT|YARN|CLANG)                                                      
+
+[docker]
+--detect.docker.image                                                                              The Docker image name to inspect. For Detect to run Docker Inspector, either 
+                                                                                                   this property, detect.docker.tar, or detect.docker.image.id must be set.     
+                                                                                                   Docker Inspector finds packages installed by the Linux package manager in    
+                                                                                                   Linux-based images. detect.docker.image, detect.docker.tar, and              
+                                                                                                   detect.docker.image.id are three alternative ways to specify an image (you   
+                                                                                                   should only set one of these properties).                                    
+--detect.docker.image.id                                                                           The ID (shown in the 'IMAGE ID' column of 'docker images' output) of the     
+                                                                                                   target Docker image. The target image must already be local (must appear in  
+                                                                                                   the output of 'docker images'). detect.docker.image, detect.docker.tar, and  
+                                                                                                   detect.docker.image.id are three alternative ways to specify an image (you   
+                                                                                                   should only set one of these properties).                                    
+--detect.docker.inspector.path                                                                     This is used to override using the hosted Docker Inspector .jar file by      
+                                                                                                   binary repository url. You can use a compatible (the same major version that 
+                                                                                                   Detect downloads by default) local Docker Inspector .jar file at this path.  
+--detect.docker.inspector.version                                                                  Version of the Docker Inspector to use. By default Detect will attempt to    
+                                                                                                   automatically determine the version to use.                                  
+--detect.docker.passthrough                                                                        Additional properties may be passed to the docker inspector by adding the    
+                                                                                                   prefix detect.docker.passthrough to each Docker Inspector property name and  
+                                                                                                   assigning a value. The 'detect.docker.passthrough' prefix will be removed    
+                                                                                                   from the property name to generate the property name passed to Docker        
+                                                                                                   Inspector (with the given value).                                            
+--detect.docker.path                                                                               Path to the docker executable (used to load image inspector Docker images in 
+                                                                                                   order to run the Docker Inspector in air gap mode).                          
+--detect.docker.path.required                                        false                         If set to true, Detect will attempt to run the Docker Inspector only if it   
+                                                                                                   finds a docker client executable.                                            
+--detect.docker.platform.top.layer.id                                                              To exclude components from platform layers from the results, assign to this  
+                                                                                                   property the ID of the top layer of the platform image. Get the platform top 
+                                                                                                   layer ID from the output of 'docker inspect platformimage:tag'. The platform 
+                                                                                                   top layer ID is the last item in RootFS.Layers. For more information, see    
+                                                                                                   'Isolating application components' in the Docker Inspector documentation.    
+--detect.docker.tar                                                                                A Docker image saved to a .tar file using the 'docker save' command. The     
+                                                                                                   file must be readable by all. detect.docker.image, detect.docker.tar, and    
+                                                                                                   detect.docker.image.id are three alternative ways to specify an image (you   
+                                                                                                   should only set one of these properties).                                    
+
+[general]
+--detect.detector.buildless                                          false                         If set to true, only Detector's capable of running without a build will be   
+                                                                                                   run.                                                                         
+--detect.force.success                                               false                         If true, Detect will always exit with code 0.                                
+--detect.ignore.connection.failures                                  false                         If true, Detect will ignore any products that it cannot connect to.          
+--detect.parallel.processors                                         1                             The number of threads to run processes in parallel, defaults to 1, but if    
+                                                                                                   you specify less than or equal to 0, the number of processors on the machine 
+                                                                                                   will be used.                                                                
+--detect.wait.for.results                                            false                         If set to true, Detect will wait for Synopsys products until results are     
+                                                                                                   available or the detect.report.timeout is exceeded.                          
+
+[go]
+--detect.go.path                                                                                   Path to the Go executable.                                                   
+
+[gradle]
+--detect.gradle.build.command                                                                      Gradle command line arguments to add to the gradle/gradlew command line.     
+--detect.gradle.excluded.configurations                                                            A comma-separated list of Gradle configurations to exclude.                  
+--detect.gradle.excluded.projects                                                                  A comma-separated list of Gradle sub-projects to exclude.                    
+--detect.gradle.included.configurations                                                            A comma-separated list of Gradle configurations to include.                  
+--detect.gradle.included.projects                                                                  A comma-separated list of Gradle sub-projects to include.                    
+--detect.gradle.inspector.version                                                                  The version of the Gradle Inspector that Detect should use. By default,      
+                                                                                                   Detect will try to automatically determine the correct Gradle Inspector      
+                                                                                                   version.                                                                     
+--detect.gradle.path                                                                               The path to the Gradle executable (gradle or gradlew).                       
+
+[hex]
+--detect.hex.rebar3.path                                                                           The path to the rebar3 executable.                                           
+
+[impact analysis]
+--detect.impact.analysis.enabled                                     false                         If set to true, Detect will attempt to look for *.class files and generate a 
+                                                                                                   Vulnerability Impact Analysis Report for upload to Black Duck.               
+--detect.impact.analysis.output.path                                                               The path to the output directory for Impact Analysis reports.                
+
+[lerna]
+--detect.lerna.include.private                                       false                         Lerna allows for private packages that do not get published. Set this to     
+                                                                                                   true to include all packages including private packages.                     
+--detect.lerna.path                                                                                Path of the lerna executable.                                                
+
+[logging]
+--logging.level.com.synopsys.integration                             INFO                          The logging level of Detect. (OFF|ERROR|WARN|INFO|DEBUG|TRACE)               
+--logging.level.detect                                               INFO                          Shorthand for the logging level of detect. Equivalent to setting             
+                                                                                                   logging.level.com.synopsys.integration. (OFF|ERROR|WARN|INFO|DEBUG|TRACE)    
+
+[maven]
+--detect.maven.build.command                                                                       Maven command line arguments to add to the mvn/mvnw command line.            
+--detect.maven.excluded.modules                                                                    A comma-separated list of Maven modules (sub-projects) to exclude.           
+--detect.maven.excluded.scopes                                                                     A comma separated list of Maven scopes. Output will be limited to            
+                                                                                                   dependencies outside these scopes (overrides include).                       
+--detect.maven.include.plugins                                       false                         Whether or not detect will include the plugins section when parsing a        
+                                                                                                   pom.xml.                                                                     
+--detect.maven.included.modules                                                                    A comma-separated list of Maven modules (sub-projects) to include.           
+--detect.maven.included.scopes                                                                     A comma separated list of Maven scopes. Output will be limited to            
+                                                                                                   dependencies within these scopes (overridden by exclude).                    
+--detect.maven.path                                                                                The path to the Maven executable (mvn or mvnw).                              
+
+[npm]
+--detect.npm.arguments                                                                             A space-separated list of additional arguments that Detect will add at then  
+                                                                                                   end of the npm ls command line when Detect executes the NPM CLI Detector on  
+                                                                                                   an NPM project.                                                              
+--detect.npm.include.dev.dependencies                                true                          Set this value to false if you would like to exclude your dev dependencies   
+                                                                                                   when ran.                                                                    
+--detect.npm.path                                                                                  The path to the Npm executable.                                              
+
+[nuget]
+--detect.dotnet.path                                                                               The path to the dotnet executable.                                           
+--detect.nuget.config.path                                                                         The path to the Nuget.Config file to supply to the nuget exe.                
+--detect.nuget.excluded.modules                                                                    The names of the projects in a solution to exclude.                          
+--detect.nuget.ignore.failure                                        false                         If true errors will be logged and then ignored.                              
+--detect.nuget.included.modules                                                                    The names of the projects in a solution to include (overrides exclude).      
+--detect.nuget.inspector.version                                                                   Version of the Nuget Inspector. By default Detect will run the latest        
+                                                                                                   version that is compatible with the Detect version.                          
+--detect.nuget.packages.repo.url                                     https://api.nuget.org/v3/inde The source for nuget packages                                                
+                                                                     x.json                                                                                                     
+
+[packagist]
+--detect.packagist.include.dev.dependencies                          true                          Set this value to false if you would like to exclude your dev requires       
+                                                                                                   dependencies when ran.                                                       
+
+[paths]
+--detect.bash.path                                                                                 Path to the Bash executable.                                                 
+--detect.bdio.output.path                                                                          The path to the output directory for all BDIO files.                         
+--detect.bdio2.enabled                                               false                         The version of BDIO files to generate.                                       
+--detect.detector.search.continue                                    false                         If true, the bom tool search will continue to look for nested bom tools of   
+                                                                                                   the same type to the maximum search depth, see the detailed help for more    
+                                                                                                   information.                                                                 
+--detect.detector.search.depth                                       0                             Depth of subdirectories within the source directory to which Detect will     
+                                                                                                   search for files that indicate whether a detector applies.                   
+--detect.git.path                                                                                  Path of the git executable                                                   
+--detect.java.path                                                                                 Path to the java executable.                                                 
+--detect.output.path                                                                               The path to the output directory.                                            
+--detect.project.detector                                                                          The detector that will be used to determine the project name and version     
+                                                                                                   when multiple detector types. This property should be used with the          
+                                                                                                   detect.project.tool.                                                         
+--detect.project.tool                                                DOCKER,DETECTOR,BAZEL         The tool priority for project name and version. The project name and version 
+                                                                                                   will be determined by the first tool in this list that provides them.        
+                                                                                                   (DETECTOR|SIGNATURE_SCAN|BINARY_SCAN|IMPACT_ANALYSIS|POLARIS|DOCKER|BAZEL)   
+--detect.scan.output.path                                                                          The output directory for all signature scanner output files. If not set, the 
+                                                                                                   signature scanner output files will be in a 'scan' subdirectory of the       
+                                                                                                   output directory.                                                            
+--detect.source.path                                                                               The source path is the path to the project directory to inspect. If no value 
+                                                                                                   is provided, the source path defaults to the current working directory.      
+--detect.swift.path                                                                                Path of the swift executable.                                                
+--detect.tools                                                                                     The tools Detect should allow in a comma-separated list. Tools in this list  
+                                                                                                   (as long as they are not also in the excluded list) will be allowed to run   
+                                                                                                   if all criteria of the tool are met. Exclusion rules always win.             
+                                                                                                   (ALL|NONE|DETECTOR|SIGNATURE_SCAN|BINARY_SCAN|IMPACT_ANALYSIS|POLARIS|DOCKER 
+                                                                                                   |BAZEL)                                                                      
+--detect.tools.excluded                                                                            The tools Detect should not allow, in a comma-separated list. Excluded tools 
+                                                                                                   will not be run even if all criteria for the tool is met. Exclusion rules    
+                                                                                                   always win.                                                                  
+                                                                                                   (ALL|NONE|DETECTOR|SIGNATURE_SCAN|BINARY_SCAN|IMPACT_ANALYSIS|POLARIS|DOCKER 
+                                                                                                   |BAZEL)                                                                      
+--detect.tools.output.path                                                                         The path to the tools directory where detect should download and/or access   
+                                                                                                   things like the Signature Scanner that it shares over multiple runs.         
+
+[pear]
+--detect.pear.only.required.deps                                     false                         Set to true if you would like to include only required packages.             
+--detect.pear.path                                                                                 The path to the pear executable.                                             
+
+[pip]
+--detect.pip.only.project.tree                                       false                         By default, pipenv includes all dependencies found in the graph. Set to true 
+                                                                                                   to only include dependencies found underneath the dependency that matches    
+                                                                                                   the provided pip project and version name.                                   
+--detect.pip.path                                                                                  The path to the Pip executable.                                              
+--detect.pip.project.name                                                                          The name of your PIP project, to be used if your project's name cannot be    
+                                                                                                   correctly inferred from its setup.py file.                                   
+--detect.pip.project.version.name                                                                  The version of your PIP project, to be used if your project's version name   
+                                                                                                   cannot be correctly inferred from its setup.py file.                         
+--detect.pip.requirements.path                                                                     A comma-separated list of paths to requirements files, to be used to analyze 
+                                                                                                   requirements files with a filename other than requirements.txt or to specify 
+                                                                                                   which requirements files should be analyzed.                                 
+--detect.pipenv.path                                                                               The path to the Pipenv executable.                                           
+
+[project]
+--detect.bom.aggregate.name                                                                        If set, this will aggregate all the BOMs to create a single BDIO file with   
+                                                                                                   the name provided.                                                           
+--detect.bom.aggregate.remediation.mode                              TRANSITIVE                    If an aggregate BDIO file is being generated and this property is set to     
+                                                                                                   DIRECT, the aggregate BDIO file will exclude code location nodes from the    
+                                                                                                   top layer of the dependency tree to preserve the correct identification of   
+                                                                                                   direct dependencies in the resulting Black Duck BOM. When this property is   
+                                                                                                   set to TRANSITIVE (the default), component source information is preserved   
+                                                                                                   by including code location nodes at the top of the dependency tree, but all  
+                                                                                                   components will appear as TRANSITIVE in the BOM. (DIRECT|TRANSITIVE)         
+--detect.clone.project.version.latest                                false                         If set to true, detect will attempt to use the latest project version as the 
+                                                                                                   clone for this project. The project must exist and have at least one         
+                                                                                                   version.                                                                     
+--detect.clone.project.version.name                                                                The name of the project version to clone this project version from. Respects 
+                                                                                                   the given Clone Categories in detect.project.clone.categories or as set on   
+                                                                                                   the Black Duck server.                                                       
+--detect.code.location.name                                                                        An override for the name Detect will use for the scan file it creates. If    
+                                                                                                   supplied and multiple scans are found, Detect will append an index to each   
+                                                                                                   scan name. When this property is set, detect.project.codelocation.prefix and 
+                                                                                                   detect.project.codelocation.suffix are ignored.                              
+--detect.custom.fields.project                                                                     A  list of custom fields with a label and comma-separated value starting     
+                                                                                                   from index 0. For each index, provide one label and one value. For example,  
+                                                                                                   to set a custom field with label 'example' to 'one,two':                     
+                                                                                                   detect.custom.fields.project[0].label='example' and                          
+                                                                                                   detect.custom.fields.project[0].value='one,two'. To set another field, use   
+                                                                                                   index 1. Note that these will not show up in the detect configuration log.   
+--detect.custom.fields.version                                                                     A  list of custom fields with a label and comma-separated value starting     
+                                                                                                   from index 0. For each index, provide one label and one value. For example , 
+                                                                                                   to set a custom field with label 'example' to 'one,two':                     
+                                                                                                   detect.custom.fields.version[0].label='example' and                          
+                                                                                                   detect.custom.fields.version[0].value='one,two'. To set another field, use   
+                                                                                                   index 1. Note that these will not show up in the detect configuration log.   
+--detect.parent.project.name                                                                       When a parent project and version name are specified, the created detect     
+                                                                                                   project will be added as a component to the specified parent project         
+                                                                                                   version. The specified parent project and parent project version must exist  
+                                                                                                   on Black Duck.                                                               
+--detect.parent.project.version.name                                                               When a parent project and version name are specified, the created detect     
+                                                                                                   project will be added as a component to the specified parent project         
+                                                                                                   version. The specified parent project and parent project version must exist  
+                                                                                                   on Black Duck.                                                               
+--detect.policy.check.fail.on.severities                             NONE                          A comma-separated list of policy violation severities that will fail Detect. 
+                                                                                                   If this is set to NONE, Detect will not fail due to policy violations. A     
+                                                                                                   value of ALL is equivalent to all of the other possible values except NONE.  
+                                                                                                   (ALL|NONE|BLOCKER|CRITICAL|MAJOR|MINOR|TRIVIAL|UNSPECIFIED)                  
+--detect.project.application.id                                                                    Sets the 'Application ID' project setting.                                   
+--detect.project.clone.categories                                    COMPONENT_DATA,VULN_DATA      An override for the Project Clone Categories that are used when cloning a    
+                                                                                                   version. If the project already exists, make sure to use                     
+                                                                                                   --detect.project.version.update to make sure these are set.                  
+                                                                                                   (COMPONENT_DATA|CUSTOM_FIELD_DATA|LICENSE_TERM_FULFILLMENT|VULN_DATA)        
+--detect.project.codelocation.prefix                                                               A prefix to the name of the scans created by Detect. Useful for running      
+                                                                                                   against the same projects on multiple machines.                              
+--detect.project.codelocation.suffix                                                               A suffix to the name of the scans created by Detect.                         
+--detect.project.codelocation.unmap                                  false                         If set to true, unmaps all other scans mapped to the project version         
+                                                                                                   produced by the current run of Detect.                                       
+--detect.project.description                                                                       If project description is specified, your project version will be created    
+                                                                                                   with this description.                                                       
+--detect.project.level.adjustments                                   true                          Sets the component adjustments setting on the Black Duck project.            
+--detect.project.name                                                                              An override for the name to use for the Black Duck project. If not supplied, 
+                                                                                                   Detect will attempt to use the tools to figure out a reasonable project      
+                                                                                                   name. If that fails, the final part of the directory path where the          
+                                                                                                   inspection is taking place will be used.                                     
+--detect.project.tags                                                                              A comma-separated list of tags to add to the project. This property is not   
+                                                                                                   supported when using Synopsys Detect in offline mode.                        
+--detect.project.tier                                                                              If a Black Duck project tier is specified, your project will be created with 
+                                                                                                   this tier.                                                                   
+--detect.project.user.groups                                                                       A comma-separated list of names of user groups to add to the project.        
+--detect.project.version.distribution                                EXTERNAL                      An override for the Project Version distribution                             
+                                                                                                   (EXTERNAL|INTERNAL|OPENSOURCE|SAAS)                                          
+--detect.project.version.name                                                                      An override for the version to use for the Black Duck project. If not        
+                                                                                                   supplied, Detect will attempt to use the tools to figure out a reasonable    
+                                                                                                   version name. If that fails, the current date will be used.                  
+--detect.project.version.nickname                                                                  If a project version nickname is specified, your project version will be     
+                                                                                                   created with this nickname.                                                  
+--detect.project.version.notes                                                                     If project version notes are specified, your project version will be created 
+                                                                                                   with these notes.                                                            
+--detect.project.version.phase                                       DEVELOPMENT                   An override for the Project Version phase.                                   
+                                                                                                   (ARCHIVED|DEPRECATED|DEVELOPMENT|PLANNING|PRERELEASE|RELEASED)               
+--detect.project.version.update                                      false                         If set to true, will update the Project Version with the configured          
+                                                                                                   properties. See detailed help for more information.                          
+
+[proxy]
+--blackduck.proxy.host                                                                             Hostname for proxy server.                                                   
+--blackduck.proxy.ignored.hosts                                                                    A comma separated list of regular expression host patterns that should not   
+                                                                                                   use the proxy.                                                               
+--blackduck.proxy.ntlm.domain                                                                      NTLM Proxy domain.                                                           
+--blackduck.proxy.ntlm.workstation                                                                 NTLM Proxy workstation.                                                      
+--blackduck.proxy.password                                                                         Proxy password.                                                              
+--blackduck.proxy.port                                                                             Proxy port.                                                                  
+--blackduck.proxy.username                                                                         Proxy username.                                                              
+
+[python]
+--detect.python.path                                                                               The path to the Python executable.                                           
+
+[report]
+--detect.notices.report                                              false                         When set to true, a Black Duck notices report in text form will be created   
+                                                                                                   in your source directory.                                                    
+--detect.notices.report.path                                         .                             The output directory for notices report. Default is the source directory.    
+--detect.risk.report.pdf                                             false                         When set to true, a Black Duck risk report in PDF form will be created.      
+--detect.risk.report.pdf.path                                        .                             The output directory for risk report in PDF. Default is the source           
+                                                                                                   directory.                                                                   
+
+[ruby]
+--detect.ruby.include.dev.dependencies                               false                         If set to true, development dependencies will be included when parsing       
+                                                                                                   *.gemspec files.                                                             
+--detect.ruby.include.runtime.dependencies                           true                          If set to false, runtime dependencies will not be included when parsing      
+                                                                                                   *.gemspec files.                                                             
+
+[sbt]
+--detect.sbt.excluded.configurations                                                               The names of the sbt configurations to exclude.                              
+--detect.sbt.included.configurations                                                               The names of the sbt configurations to include.                              
+--detect.sbt.report.search.depth                                     3                             Depth the sbt detector will use to search for report files.                  
+
+[signature scanner]
+--detect.blackduck.signature.scanner.arguments                                                     Additional arguments to use when running the Black Duck signature scanner.   
+--detect.blackduck.signature.scanner.copyright.search                false                         When set to true, user will be able to scan and discover copyright names in  
+                                                                                                   Black Duck. Corresponding Signature Scanner CLI Argument:                    
+                                                                                                   --copyright-search.                                                          
+--detect.blackduck.signature.scanner.dry.run                         false                         If set to true, the signature scanner results are not uploaded to Black      
+                                                                                                   Duck, and the scanner results are written to disk via the Signature Scanner  
+                                                                                                   CLI argument: --dryRunWriteDir.                                              
+--detect.blackduck.signature.scanner.individual.file.matching        NONE                          Users may set this property to indicate what types of files they want to     
+                                                                                                   match. Corresponding Signature Scanner CLI Argument:                         
+                                                                                                   --individualFileMatching. (NONE|SOURCE|BINARY|ALL)                           
+--detect.blackduck.signature.scanner.license.search                  false                         When set to true, user will be able to scan and discover license names in    
+                                                                                                   Black Duck. Corresponding Signature Scanner CLI Argument: --license-search.  
+--detect.blackduck.signature.scanner.local.path                                                    To use a local signature scanner, specify the path where the signature       
+                                                                                                   scanner was unzipped. This will likely look similar to 'scan.cli-x.y.z' and  
+                                                                                                   includes the 'bin, icon, jre, and lib' directories of the expanded scan.cli. 
+--detect.blackduck.signature.scanner.memory                          4096                          The memory for the scanner to use.                                           
+--detect.blackduck.signature.scanner.paths                                                         If this property is not set, the signature scanner target path is the source 
+                                                                                                   path (see property detect.source.path). If this property is set, the paths   
+                                                                                                   provided in this property's value will be signature scanned instead (the     
+                                                                                                   signature scanner will be executed once for each provided path).             
+--detect.blackduck.signature.scanner.snippet.matching                NONE                          Use this value to enable the various snippet scanning modes. For a full      
+                                                                                                   explanation, please refer to the 'Running a component scan using the         
+                                                                                                   Signature Scanner command line' section in your Black Duck server's online   
+                                                                                                   help. Corresponding Signature Scanner CLI Arguments: --snippet-matching,     
+                                                                                                   --snippet-matching-only, --full-snippet-scan.                                
+                                                                                                   (NONE|SNIPPET_MATCHING|SNIPPET_MATCHING_ONLY|FULL_SNIPPET_MATCHING|FULL_SNIP 
+                                                                                                   PET_MATCHING_ONLY)                                                           
+--detect.blackduck.signature.scanner.upload.source.mode              false                         If set to true, the signature scanner will, if supported by your Black Duck  
+                                                                                                   version, upload source code to Black Duck. Corresponding Signature Scanner   
+                                                                                                   CLI Argument: --upload-source.                                               
+
+[yarn]
+--detect.yarn.prod.only                                              false                         Set this to true to only scan production dependencies.                       
+
+To set a Detect property on the command line: 
+	--<property name>=<value>
+
+To see all properties, you may request verbose help log with '-hv'
+To see the hidden deprecated properties, you may request them with '-hd'
+
+To get detailed help for a specific property, you may specify the property name with '-h [property]'
+
+To print only a subset of options, you may specify one of the following printable groups with '-h [group]': 
+	Detectors, artifactory, blackduck server, cleanup, codelocation, general, logging, paths, policy check, project, project info, proxy, report, source scan, source path, detector, polaris, signature scanner, binary scanner, impact analysis, bazel, bitbake, cargo, conan, conda, cpan, docker, go, gradle, hex, lerna, maven, npm, nuget, packagist, pear, pip, python, ruby, sbt, yarn, blackduck, debug, global, offline, policy, project setting, report setting, search, default
+
+To search options, you may specify a search term with '-h [term]'
+
+To run in interactive mode (which prompts you for the values needed for common use cases), run Detect with the argument '--interactive'
+
+2021-06-29 19:57:57 GMT INFO  [main] --- 
+2021-06-29 19:57:57 GMT INFO  [main] --- Skipping cleanup, it is disabled.
+2021-06-29 19:57:57 GMT INFO  [main] --- 
+2021-06-29 19:57:57 GMT INFO  [main] --- 
+2021-06-29 19:57:57 GMT INFO  [main] --- ======== Detect Status ========
+2021-06-29 19:57:57 GMT INFO  [main] --- 
+2021-06-29 19:57:57 GMT INFO  [main] --- Overall Status: SUCCESS - Detect exited successfully.
+2021-06-29 19:57:57 GMT INFO  [main] --- 
+2021-06-29 19:57:57 GMT INFO  [main] --- ===============================
+2021-06-29 19:57:57 GMT INFO  [main] --- 
+2021-06-29 19:57:57 GMT INFO  [main] --- Detect duration: 00h 00m 00s 103ms
+Result code of 0, exiting
